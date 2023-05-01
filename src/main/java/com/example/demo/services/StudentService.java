@@ -17,7 +17,13 @@ public class StudentService {
 	public Iterable<Student> getStudents(){
 		return repo.findAll();
 	}
-	
+	public Student getStudent(String sid) {
+		try {
+			return repo.findStudentBySid(sid).get();
+		} catch(NoSuchElementException nse) {
+			throw new StudentExistsException(String.format("Student {%s} Does not exist", sid));
+		}
+	}
 	public void deleteStudent(String sid) {
 		try {
 			Student savedStudent = repo.findStudentBySid(sid).get();

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,22 @@ public class Controller {
 		return ResponseEntity.ok(ls.updateLecturer(lid, lecturer));
 	}
 	
+	@CrossOrigin
+	@GetMapping("/module/lecturer/{lid}")
+	public ResponseEntity<List<com.example.demo.models.Module>> getModuleForLecturer(@PathVariable(value="lid") String lid){
+		//lecturer.setLid(lid);
+		return ResponseEntity.ok(ls.getLecturer(lid).getModules());
+	}
+	
+	@CrossOrigin
+	@GetMapping("/module/student/{sid}")
+	public ResponseEntity<List<com.example.demo.models.Module>> getModuleForStudent(@PathVariable(value="sid") String sid){
+		//lecturer.setLid(lid);
+		return ResponseEntity.ok(ss.getStudent(sid).getModules());
+	}
+	
+	
+	
 	@GetMapping("lecturer/search")
 	public ResponseEntity<Iterable<Lecturer>> searchLecturer(@NotNull(message="") @RequestParam String taxBand, @RequestParam Optional<Integer> salaryScale){
 		return ResponseEntity.ok(ls.searchLecturer(taxBand, salaryScale.orElse(0)));
@@ -76,6 +93,14 @@ public class Controller {
 	public ResponseEntity<Iterable<Student>> getStudents(){
 		return ResponseEntity.ok(ss.getStudents());
 	}
+
+	
+	@CrossOrigin
+	@GetMapping("student/{sid}")
+	public ResponseEntity<Student> getStudent(@PathVariable(value="sid") String sid){
+		return ResponseEntity.ok(ss.getStudent(sid));
+	}
+	
 	@CrossOrigin
 	@DeleteMapping("students/{sid}")
 	public ResponseEntity<Message> deleteStudent(@PathVariable(value="sid") String sid){
